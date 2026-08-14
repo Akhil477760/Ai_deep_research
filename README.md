@@ -1,100 +1,234 @@
-# AI Deep Research Agent
+# AI Deep Research 
 
 A deep research assistant that plans, searches the web, writes to a virtual filesystem, and renders each tool call as a live card in a workspace pane. Built with [CopilotKit](https://github.com/CopilotKit/CopilotKit), [Deep Agents](https://docs.copilotkit.ai/integrations/langgraph/deep-agents), and [Tavily](https://www.tavily.com/) on top of Next.js + LangGraph (Python).
 
-https://github.com/user-attachments/assets/68d5729f-91f9-4fd9-a579-cd1a8f4aad8d
+The application is built with Next.js and TypeScript for the frontend, Python and FastAPI for the backend, and LangGraph with Deep Agents for managing the research workflow. CopilotKit and AG-UI provide the interactive interface between the user and the AI agent.
 
-**Gen UI concept — tool-rendered components with a sidecar workspace.** The Deep Agent emits four tools — `write_todos`, `write_file`, `read_file`, and `research` — and each one renders inline as a status card in the chat while updating a parallel workspace pane (plan, files, expandable tool results). Local React state mirrors the agent's filesystem via `useDefaultTool` rather than `useCoAgent`, sidestepping a Python `Dict` ↔ TypeScript `Array` type mismatch.
+The research agent can understand a user's research question, create a research plan, perform web searches, analyze the collected information, and organize intermediate results using a virtual filesystem. The agent uses tools such as `write_todos`, `write_file`, `read_file`, and `research` to manage the research process.
 
-## Prerequisites
+## Key Features
 
-- Node.js 18+
-- Python 3.12+
-- [OpenAI API Key](https://platform.openai.com/api-keys)
-- [Tavily API Key](https://app.tavily.com/home)
-- [uv](https://docs.astral.sh/uv/) (or pip) for Python deps
+- AI-powered research using Google Gemini
+- Real-time web search using Tavily
+- Multi-step research planning and analysis
+- Interactive research workspace
+- Live visualization of agent tool execution
+- Virtual filesystem for managing research information
+- Research planning using `write_todos`
+- File management using `write_file` and `read_file`
+- Web research using the `research` tool
+- Next.js and React frontend
+- Python FastAPI backend
+- LangGraph and Deep Agents for agent orchestration
+- CopilotKit and AG-UI for the interactive AI interface
 
-## Getting Started
+## How It Works
 
-1. Install Node dependencies:
+The user enters a research question through the Next.js interface. CopilotKit sends the request to the Python backend, where the Deep Research Agent processes the task using LangGraph. The agent creates a research plan, performs web searches through Tavily, analyzes the retrieved information using Google Gemini, stores relevant research data in the virtual filesystem, and generates a final response for the user.
+
+## Technology Stack
+
+- **Frontend:** Next.js, React, TypeScript
+- **Backend:** Python, FastAPI
+- **AI Model:** Google Gemini
+- **Agent Framework:** LangGraph, Deep Agents
+- **AI Interface:** CopilotKit, AG-UI
+- **Web Search:** Tavily
+- **Development Tools:** VS Code, Git, GitHub
+
+## Installation
+
+### Prerequisites
+
+Make sure the following are installed on your system:
+
+- Node.js 18 or higher
+- Python 3.12 or higher
+- Git
+- Google Gemini API Key
+- Tavily API Key
+- pip or uv
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/ai-deep-research-.git
+cd ai-deep-research-
+```
+
+### 2. Install Frontend Dependencies
+
+Install the required Node.js packages:
 
 ```bash
 npm install
 ```
 
-2. Install Python dependencies for the agent:
+### 3. Setup the Python Environment
 
-```bash
+Move into the agent directory:
+
 cd agent
-uv venv && source .venv/bin/activate
-uv pip install -e .
-cd ..
-```
 
-Or with pip:
+Create a Python virtual environment:
 
-```bash
-cd agent
-python -m venv .venv && source .venv/bin/activate
+python -m venv .venv
+
+4. Activate the Virtual Environment
+
+For Windows PowerShell:
+
+.venv\Scripts\Activate.ps1
+
+For Windows Command Prompt:
+
+.venv\Scripts\activate
+
+For macOS/Linux:
+
+source .venv/bin/activate
+5. Install Python Dependencies
+
+Run:
+
 pip install -e .
+
+Return to the project root:
+
 cd ..
-```
+API Configuration
 
-3. Copy `.env.example` to `.env` in both the root and `agent/` directories, then fill in `OPENAI_API_KEY` and `TAVILY_API_KEY`.
+# Create a .env file inside the agent directory:
 
-4. Start the agent (terminal 1):
+ai-deep-research-agent/
+│
+└── agent/
+    └── .env
 
-```bash
+# Add the following environment variables:
+
+GEMINI_API_KEY=your_gemini_api_key
+GEMINI_MODEL=gemini-3.5-flash
+TAVILY_API_KEY=your_tavily_api_key
+
+
+LANGGRAPH_DEPLOYMENT_URL=http://localhost:8123
+SERVER_HOST=0.0.0.0
+SERVER_PORT=8123
+Get API Keys
+
+Google Gemini API key:
+
+https://aistudio.google.com/apikey
+
+Tavily API key:
+
+https://app.tavily.com/home
+
+
+# Running the Project
+
+The application requires two terminals: one for the Python backend and one for the Next.js frontend.
+
+Terminal 1: Start the Backend
+
+Open a terminal and navigate to the agent directory:
+
 cd agent
-uv run python main.py
-```
 
-5. Start the frontend (terminal 2):
+Activate the virtual environment if it is not already active.
 
-```bash
+Then start the FastAPI backend:
+
+python main.py
+
+The backend will run at:
+
+http://localhost:8123
+Terminal 2: Start the Frontend
+
+Open a second terminal and navigate to the project root:
+
+cd ai-deep-research-agent
+
+Start the Next.js development server:
+
 npm run dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) and ask the assistant to research any topic.
+The frontend will run at:
 
-## Architecture
+http://localhost:3000
 
-```
-[User asks research question]
-        ↓
-Next.js Frontend (CopilotChat + Workspace)
-        ↓
-CopilotKit Runtime → LangGraphHttpAgent
-        ↓
-Python Backend (FastAPI + AG-UI)
-        ↓
-Deep Agent (research_assistant)
-    ├── write_todos        (planning, built-in)
-    ├── write_file         (filesystem, built-in)
-    ├── read_file          (filesystem, built-in)
-    └── research(query)
-            └── internal Deep Agent [thread-isolated]
-                    └── internet_search (Tavily)
-```
+Open http://localhost:3000 in your browser to use the application.
 
-## Environment Variables
+Example
 
-| Variable                   | Required | Default                 | Description                                         |
-| -------------------------- | -------- | ----------------------- | --------------------------------------------------- |
-| `OPENAI_API_KEY`           | Yes      | -                       | [Get API key](https://platform.openai.com/api-keys) |
-| `TAVILY_API_KEY`           | Yes      | -                       | [Get API key](https://app.tavily.com/home)          |
-| `OPENAI_MODEL`             | No       | `gpt-5.5`               | Model to use (`gpt-5.5`)                            |
-| `LANGGRAPH_DEPLOYMENT_URL` | No       | `http://localhost:8123` | Backend URL                                         |
-| `SERVER_HOST`              | No       | `0.0.0.0`               | Backend host                                        |
-| `SERVER_PORT`              | No       | `8123`                  | Backend port                                        |
+Enter a research question such as:
 
-## Learn more
+What are the latest developments in artificial intelligence?
 
-- [Deep Agents documentation](https://docs.copilotkit.ai/integrations/langgraph/deep-agents)
-- [Building Frontends for Deep Agents](https://www.copilotkit.ai/blog/how-to-build-a-frontend-for-langchain-deep-agents-with-copilotkit)
-- [CopilotKit documentation](https://docs.copilotkit.ai)
-- [Tavily documentation](https://docs.tavily.com/welcome)
+The agent will create a research plan, search the web using Tavily, analyze the retrieved information using Google Gemini, organize the research data, and generate a final response.
 
-## License
+# Environment Variables
+Variable	Required	Description
+GEMINI_API_KEY	Yes	Google Gemini API key
+GEMINI_MODEL	No	Gemini model used by the agent
+TAVILY_API_KEY	Yes	Tavily web search API key
+LANGGRAPH_DEPLOYMENT_URL	No	Backend URL
+SERVER_HOST	No	Backend host
+SERVER_PORT	No	Backend port
 
-Upstream license applies — see [`CopilotKit/CopilotKit`](https://github.com/CopilotKit/CopilotKit).
+# Project Structure
+ai-deep-research-agent/
+│
+├── agent/
+│   ├── agent.py
+│   ├── main.py
+│   ├── tools.py
+│   ├── pyproject.toml
+│   ├── .env.example
+│   └── .venv/
+│
+├── src/
+│   ├── app/
+│   ├── components/
+│   └── ...
+│
+├── public/
+├── .gitignore
+├── package.json
+├── package-lock.json
+├── next.config.ts
+└── README.md
+Security
+
+API keys must be stored in environment variables and should never be hard-coded into the source code.
+
+Add the following to .gitignore:
+
+.env
+.env.*
+!.env.example
+
+
+.venv/
+node_modules/
+.next/
+__pycache__/
+*.pyc
+
+If an API key is accidentally pushed to GitHub, revoke or rotate the key immediately.
+
+# Future Enhancements
+PDF upload and analysis
+PDF summarization and question answering
+Multiple document comparison
+Automatic research citations
+Research history
+Research report generation
+PDF and Word report export
+CSV and Excel analysis
+Charts and data visualization
+
+# License
+This project is intended for educational, learning, and portfolio purposes.

@@ -1,5 +1,5 @@
 """
-Deep Research Assistant Agent
+Ai deep Research 
 
 A Deep Agents-powered research assistant that demonstrates CopilotKit's
 planning, filesystem, and subagent capabilities using Tavily for web research.
@@ -19,7 +19,7 @@ load_dotenv()
 
 
 # Main agent system prompt - coordinates research and synthesizes findings
-MAIN_SYSTEM_PROMPT = """You are a Deep Research Assistant, an expert at planning and
+MAIN_SYSTEM_PROMPT = """You are a AI Deep Research , an expert at planning and
 executing comprehensive research on any topic.
 
 Hard rules (ALWAYS follow):
@@ -49,7 +49,7 @@ Always maintain a professional, comprehensive research style."""
 
 
 def build_agent():
-    """Build the Deep Research Agent with CopilotKit integration.
+    """Build the AI Deep Research  with CopilotKit integration.
 
     Creates a main research coordinator agent with a researcher subagent.
     Uses CopilotKitMiddleware for frontend state sync and generative UI.
@@ -89,7 +89,7 @@ def build_agent():
         checkpointer=MemorySaver(),
     )
 
-    print(f"[AGENT] Deep Research Agent created with model={model_name}")
+    print(f"[AGENT] AI Deep Research  created with model={model_name}")
     print(f"[AGENT] Main tools: {[t.name for t in main_tools]}")
 
     # Configure recursion limit for complex research tasks
