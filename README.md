@@ -1,6 +1,6 @@
 # AI Deep Research Agent
 
-A deep research assistant that plans, searches the web, writes to a virtual filesystem, and renders each tool call as a live card in a workspace pane. Built with [CopilotKit](https://github.com/CopilotKit/CopilotKit), [Deep Agents](https://docs.copilotkit.ai/integrations/langgraph/deep-agents), [AG-UI](https://github.com/ag-ui-protocol/ag-ui), and [Tavily](https://www.tavily.com/) on top of Next.js + LangGraph (Python).
+A deep research assistant that plans, searches the web, writes to a virtual filesystem, and renders each tool call as a live card in a workspace pane. Built with [CopilotKit](https://github.com/CopilotKit/CopilotKit), [Deep Agents](https://docs.copilotkit.ai/integrations/langgraph/deep-agents), and [Tavily](https://www.tavily.com/) on top of Next.js + LangGraph (Python).
 
 https://github.com/user-attachments/assets/68d5729f-91f9-4fd9-a579-cd1a8f4aad8d
 
